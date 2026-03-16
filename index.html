@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>OilHunt UI</title>
+
+<style>
+/* ===== RESET & BASE ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    background: black;
+}
+
+/* ===== MAIN CONTAINER ===== */
+.game-ui {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background-image: url("https://alianthstudios.github.io/Oil-Hunt/background.png");
+    background-size: cover;              /* se adapta sin deformarse */
+    background-position: center center;  /* siempre centrado */
+    background-repeat: no-repeat;
+}
+
+/* ===== TOP SECTION (LOGO + PLAY) ===== */
+.top-content {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 70vh; /* zona flexible superior */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* centra verticalmente */
+    align-items: center;
+    gap: clamp(3vh, 4vh, 6vh);
+    padding: clamp(4vh, 6vh, 8vh) 8vw 0;
+}
+
+
+/* LOGO */
+.logo {
+    width: clamp(50vw, 65vw, 75vw);
+    max-height: 30vh;
+    object-fit: contain;
+}
+
+
+/* PLAY BUTTON */
+.play-btn {
+    width: clamp(35vw, 45vw, 55vw);
+    max-height: 18vh;
+    object-fit: contain;
+    cursor: pointer;
+    transition: transform 0.15s ease;
+}
+
+
+.play-btn:active {
+    transform: scale(0.92);
+}
+
+/* ===== BOTTOM BUTTONS ===== */
+.bottom-buttons {
+    position: absolute;
+    bottom: 4vh;
+    left: 0;
+    width: 100%;
+    padding: 0 5vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* INFO & PROFILE */
+.icon-btn {
+    width: 12vw;
+    max-width: 70px;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+    cursor: pointer;
+    transition: transform 0.15s ease;
+}
+
+.icon-btn:active {
+    transform: scale(0.9);
+}
+
+/* ===== PREVENT IMAGE DRAG ===== */
+img {
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+/* ===== MUTE BUTTON ===== */
+.mute-btn {
+    position: absolute;
+    top: 4vh;
+    right: 5vw;
+    width: 10vw;
+    max-width: 60px;
+    aspect-ratio: 1 / 1;
+    z-index: 10;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="game-ui">
+
+    <!-- TOP CONTENT -->
+    <div class="top-content">
+        <img 
+            src="https://alianthstudios.github.io/Oil-Hunt/Game.png" 
+            alt="Game Logo" 
+            class="logo"
+        >
+
+        <img 
+            src="https://alianthstudios.github.io/Oil-Hunt/playbb.png" 
+            alt="Play" 
+            class="play-btn"
+            onclick="goPlay()"
+        >
+    </div>
+
+ 
+
+    <!-- BOTTOM BUTTONS -->
+    <div class="bottom-buttons">
+        <img 
+            src="https://alianthstudios.github.io/Oil-Hunt/infob.png" 
+            alt="Info" 
+            class="icon-btn"
+            onclick="goInfo()"
+        >
+
+        <img 
+            src="https://alianthstudios.github.io/Oil-Hunt/userb.png" 
+            alt="Profile" 
+            class="icon-btn"
+            onclick="goProfile()"
+        >
+    </div>
+
+</div>
+
+<!-- BACKGROUND MUSIC -->
+<audio id="bg-music" src="https://alianthstudios.github.io/Oil-Hunt/music.mp3" loop></audio>
+
+<script>
+/* ===== NAVIGATION FUNCTIONS ===== */
+
+function goPlay() {
+    window.location.href = "go:play";
+}
+
+function goInfo() {
+    window.location.href = "go:info";
+}
+
+function goProfile() {
+    window.location.href = "http://action_profile";
+}
+
+</script>
+
+
+<script>
+document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+        // App en segundo plano
+        if (!music.paused) {
+            music.pause();
+        }
+    } else {
+        // App vuelve al frente
+        if (!isMuted) {
+            music.play().catch(() => {});
+        }
+    }
+});
+</script>
+
+<script>
+let isMuted = false;
+const muteBtn = document.querySelector(".mute-btn");
+
+function toggleMute() {
+    isMuted = !isMuted;
+
+    if (isMuted) {
+        music.volume = 0;
+        muteBtn.src = "";
+    } else {
+        music.volume = 0.5;
+        muteBtn.src = "";
+        music.play().catch(() => {});
+    }
+}
+</script>
+
+
+
+
+</body>
+</html>
